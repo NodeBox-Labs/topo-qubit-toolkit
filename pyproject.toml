@@ -1,0 +1,70 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "topo-qubit-toolkit"
+version = "0.1.0"
+description = "Exact-diagonalisation and tensor-network tools for the Kitaev chain and the toric code."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Topo Qubit Team", email = "team@topoqubit.org"}
+]
+keywords = ["topological-phases", "kitaev-chain", "toric-code", "quantum-computing", "tensor-networks"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "matplotlib>=3.7",
+    "pandas>=2.0",
+    "pyyaml>=6.0",
+    "pydantic>=2.0",
+    "typer>=0.9",
+]
+
+[project.optional-dependencies]
+tensor = ["tenpy>=1.0"]
+quantum = ["qiskit>=1.0", "qiskit-aer>=0.13"]
+open = ["qutip>=4.7"]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0",
+    "pandas-stubs",
+    "types-PyYAML",
+]
+all = ["topo-qubit-toolkit[tensor,quantum,open,dev]"]
+
+[project.scripts]
+topo-toolkit = "topo_qubit_toolkit.cli.main:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/topo_qubit_toolkit"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "B", "A", "SIM"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --cov=src/topo_qubit_toolkit --cov-report=term-missing"
